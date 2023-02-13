@@ -1,6 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+
+    @using Microsoft.AspNetCore.Identity
+    @using webapp.Data
+    @inject UserManager<ApplicationUser> userManager;
+    @inject SignInManager<ApplicationUser> signInManager;
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - webapp</title>
@@ -8,11 +14,12 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/webapp.styles.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">webapp</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Poisson et frites</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,15 +30,31 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="Menus/Index">Menu</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Menu">Menu</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        @if (signInManager.IsSignedIn(User)){
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="">
+                                <form asp-page="/Account/Logout" method="post">
+                                    <button type="submit">Logout</button>
+                                </form>
+                            </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="Account/Login">Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
+
     </header>
     <div class="container">
         <!--this is  where the body for the current page is displayed-->
@@ -42,7 +65,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - Restaurant name - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2022 - PEF - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 

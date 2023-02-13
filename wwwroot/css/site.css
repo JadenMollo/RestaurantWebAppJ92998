@@ -14,10 +14,25 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
-  background-color: brown;
+    margin-bottom: 60px;
+    background-color: #d2f7f2;
 }
 
-.navbar {
-    color: brown;
+#MenuIndexTable{
+    font-size: 150%;
+    text-align: center;
+}
+
+#MenuIndexTableCreate{
+    padding-left: 73%;
+    font-size: 150%;
+}
+
+#MenuIndexTitle{
+    text-align:center;
+    padding-right:5%;
+}
+
+h1 {
+    font-family: Lucida Handwriting;
 }
