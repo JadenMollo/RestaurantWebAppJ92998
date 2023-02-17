@@ -5,6 +5,7 @@
     ViewData["Title"] = "Create";
 }
 
+
 <h1>Create</h1>
 
 <h4>Menu</h4>
@@ -27,6 +28,18 @@
                 <label asp-for="Menu.Description" class="control-label"></label>
                 <input asp-for="Menu.Description" class="form-control" />
                 <span asp-validation-for="Menu.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Menu.Image" class="control-label">
+                <input asp-for="Menu.Image" class="form-control" />
+                    <fieldset>
+                        <legend> Upload Image </legend>
+                        <label for="Image">Image</label>
+                        <input type="file" name="Image" />
+                        <br />
+                    </fieldset>
+                </label>
+                <span asp-validation-for="Menu.Image" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

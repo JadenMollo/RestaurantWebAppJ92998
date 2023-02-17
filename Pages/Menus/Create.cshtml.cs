@@ -5,7 +5,7 @@ using webapp.Models;
 
 namespace webapp.Pages.Menus
 {
-    [Authorize(Policy = "User")]
+    [Authorize(Policy = "Admin")]
     public class CreateModel : PageModel
     {
         private readonly webapp.Data.RestaurantContext _context;
@@ -30,6 +30,16 @@ namespace webapp.Pages.Menus
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            foreach (var file in Request.Form.Files)
+            {
+                MemoryStream ms = new MemoryStream();
+                file.CopyTo(ms);
+                Menu.Image = ms.ToArray();
+
+                ms.Close();
+                ms.Dispose();
             }
 
             _context.Menu.Add(Menu);

@@ -8,7 +8,7 @@
 }
 
 <h1 id="MenuIndexTitle">The Menu</h1>
-@if (User.HasClaim("SignedIn","1"))
+@if (User.IsInRole("Admin"))
 {
     <p id="MenuIndexTableCreate">
         <a asp-page="Create">Add a menu Item</a>
@@ -30,6 +30,7 @@
         </tr>
     </thead>
     <tbody>
+        <form method="post">
 @foreach (var item in Model.Menu) {
         <tr>
             <td>
@@ -42,14 +43,29 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>  |    
-                    @if (User.HasClaim("SignedIn", "1")) {
-                        <a asp-page="./Order" asp-route-id="@item.ID">Order</a>
-                    }
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a>
+                @if(User.IsInRole("Admin")){
+                    <a asp-page="./Edit" asp-route-id="@item.ID">| Edit</a>
+                    <a asp-page="./Delete" asp-route-id="@item.ID">| Delete</a>
+                }
+                @if (User.HasClaim("SignedIn", "1")) {
+                    <td>
+                        <button formmethod="post" type="submit" asp-page-handler="Buy"
+                        asp-route-itemID="@item.ID">
+                            Buy
+                        </button>
+                    </td>
+                }
             </td>
         </tr>
 }
+        </form>
     </tbody>
 </table>
+
+@if (User.HasClaim("SignedIn","1"))
+{
+    <p id="MenuIndexTableCreate">
+        <a asp-page="Order">Order</a>
+    </p>
+}

@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using org.apache.zookeeper.data;
 using webapp.Models;
 
 namespace webapp.Pages.Menus
 {
-    [Authorize(Policy = "User")]
+    [Authorize(Policy = "Admin")]
     public class EditModel : PageModel
     {
         private readonly webapp.Data.RestaurantContext _context;
@@ -44,6 +45,16 @@ namespace webapp.Pages.Menus
                 return Page();
             }
 
+            foreach (var file in Request.Form.Files)
+            {
+                MemoryStream ms = new MemoryStream();
+                file.CopyTo(ms);
+                Menu.Image = ms.ToArray();
+
+                ms.Close();
+                ms.Dispose();
+            }
+
             _context.Attach(Menu).State = EntityState.Modified;
 
             try
@@ -68,6 +79,9 @@ namespace webapp.Pages.Menus
         private bool MenuExists(int id)
         {
             return _context.Menu.Any(e => e.ID == id);
+        }
+
+    private void imageHandler() { 
         }
     }
 }

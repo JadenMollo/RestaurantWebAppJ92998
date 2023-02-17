@@ -1,9 +1,49 @@
 ﻿@page
-@model webapp.Pages.Menus.Index1Model
+@model webapp.Pages.Menus.OrderModel
 @{
+    ViewData["Title"] = "Order";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <h1 class="text-center">Enter Your Table Number</h1>
-<div class="text-center">
-    <label for="TableNumber">Table Number:</label>
-    <input type="text" name="TableNumber" value="" />
-</div>
+
+<h1>Checkout</h1>
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th></th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                decimal price = decimal.Parse(item.Price);
+                var subtotal = price * item.Quantity;
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price)</td>
+
+                    <td>
+                        <button type="submit">+</button>
+                        <button type="submit">-</button>
+                    </td>
+                    <td>@item.Quantity</td>
+                    <td>@subtotal.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <form action="TableNumber" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Order.TableNo" class="control-label"></label>
+            <input asp-for="Order.TableNo" class="form-control" />
+            <span asp-validation-for="Order.TableNo" class="text-danger"></span>
+        <button type="submit" asp-page-handler="Buy">Buy</button>
+    </form>
+</form>

@@ -6,7 +6,7 @@ using webapp.Models;
 
 namespace webapp.Pages.Menus
 {
-    [Authorize(Policy = "User")]
+    [Authorize(Policy = "Admin")]
     public class DeleteModel : PageModel
     {
         private readonly webapp.Data.RestaurantContext _context;

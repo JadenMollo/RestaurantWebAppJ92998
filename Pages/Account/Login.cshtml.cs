@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 using System.Security.Claims;
 using webapp.Data;
 using webapp.Models;
@@ -33,7 +34,7 @@ public class LoginModel : PageModel
             var result = await _signInManager.CheckPasswordSignInAsync(user, Input.Password, false);
             if (result.Succeeded)
             {
-                var claims = new List<Claim> {
+                var claims = new Claim[] {
                     new Claim("amr","pwd"),
                     new Claim("SignedIn", "1")
                 };
@@ -42,8 +43,8 @@ public class LoginModel : PageModel
 
                 if (roles.Any())
                 {
-                    var roleClaim = string.Join(".", roles);
-                    claims.Add(new Claim("Roles", roleClaim));
+                    var roleClaim = string.Join(",", roles);
+                    claims.Append(new Claim("Roles", roleClaim));
                 }
                 await _signInManager.SignInWithClaimsAsync(user, Input.RememberMe, claims);
                 return RedirectToPage("/Index");

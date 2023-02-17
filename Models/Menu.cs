@@ -7,10 +7,10 @@ namespace webapp.Models
         [Key]
         public int ID { get; set; }
         [Required]
-        public String Name { get; set; }
+        public String ?Name { get; set; }
         [Required]
-        public String Price { get; set; }
-        public String Description { get; set; }
-
+        public string ?Price { get; set; }
+        public String ?Description { get; set; }
+        public byte[]? Image { get; set; }
     }
 }

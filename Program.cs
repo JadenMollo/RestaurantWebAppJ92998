@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using webapp.Data;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +15,18 @@ builder.Services.AddDbContext<RestaurantContext>(options => options.UseSqlServer
 
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+ .AddRoles<IdentityRole>()
  .AddEntityFrameworkStores<RestaurantContext>()
  .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(OptionsBuilderConfigurationExtensions =>
+{
+    OptionsBuilderConfigurationExtensions.LoginPath = new PathString("/Account/Login");
+    OptionsBuilderConfigurationExtensions.AccessDeniedPath = new PathString("/Account/AccessDenied");
+    OptionsBuilderConfigurationExtensions.LogoutPath = new PathString("/Index");
+});
+
+builder.Services.AddControllersWithViews();
 
 #region Authorization
 
@@ -53,5 +65,9 @@ void AddAuthorizationPolicies(IServiceCollection services)
     services.AddAuthorization(options =>
     {
         options.AddPolicy("User", policy => policy.RequireClaim("SignedIn"));
+    });
+    services.AddAuthorization(options =>
+    {
+        options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     });
 }
